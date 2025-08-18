@@ -9,19 +9,20 @@ _carch="arm64"
 _flavor="xiaomi-raphael"
 url="https://kernel.org"
 license="GPL-2.0-only"
-options="!strip !check !tracedeps pmb:cross-native"
+options="!strip !check !tracedeps
+	pmb:cross-native
+	pmb:kconfigcheck-nftables
+	"
 makedepends="
 	bash
-	build-base
-	bc
 	bison
-	devicepkg-dev
+	findutils
 	flex
 	openssl-dev
 	perl
-	linux-headers
-	cpio
-"
+	postmarketos-installkernel
+	python3
+	"
 
 # Source
 _repository="linux"
@@ -32,12 +33,10 @@ source="
 	$_config
 	"
 builddir="$srcdir/$_repository-$_commit"
-_outdir="out"
 
 prepare() {
 	default_prepare
-	REPLACE_GCCH=0
-	. downstreamkernel_prepare
+	cp "$srcdir/config-$_flavor.$arch" .config
 }
 
 build() {
@@ -52,7 +51,7 @@ package() {
 	install -Dm644 "$builddir/out/arch/$_carch/boot/Image.gz" \
 		"$pkgdir/boot/vmlinuz"
 
-	make -j2 O="$_outdir" modules_install dtbs_install \
+	make zinstall modules_install dtbs_install \
 		ARCH="$_carch" \
 		INSTALL_PATH="$pkgdir"/boot/ \
 		INSTALL_MOD_PATH="$pkgdir" \
@@ -67,5 +66,5 @@ package() {
 
 sha512sums="
 bedf51b008003456a3db40b395ae598307840f78fa6374e11dafc0535276fc601d6bd08387e8fa43d41b40f68808a01f953bd224a496a559d5304776385398a0  linux-xiaomi-raphael-a62fd895e8e8e261ccaa3d5906a6cf96f52fb69b.tar.gz
-865c74377ebdafe19f3dfe3ecd6e49a4f8fd35c969314fb7f927224e86a6d06a1033df3f35f7fada6ba9b1a0aeba413d010a0ba00be51f4724e74cc55a89d7e4  config-xiaomi-raphael.aarch64
+97ff8285a99c97199df766877803965e8996af9fcfa60a567a112bc62437189924c498b32e9bfd5cc4d7219389db20766c203c6cb38fe16786c1075c5f8a37b7  config-xiaomi-raphael.aarch64
 "
