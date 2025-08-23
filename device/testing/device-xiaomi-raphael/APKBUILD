@@ -2,17 +2,22 @@
 pkgname=device-xiaomi-raphael
 pkgdesc="Xiaomi Mi 9T Pro / Redmi K20 Pro"
 pkgver=3
-pkgrel=1
+pkgrel=2
 url="https://postmarketos.org"
 license="MIT"
 arch="aarch64"
 _carch="arm64"
-options="!check !archcheck"
+options="
+	!check
+	!archcheck
+	!strip
+	"
 depends="
 	linux-xiaomi-raphael
 	mkbootimg
 	postmarketos-base
 	mesa-vulkan-freedreno
+	msm-modem
 "
 makedepends="devicepkg-dev"
 source="
@@ -87,6 +92,7 @@ audio() {
 	depends="
 		alsa-ucm-conf
 		postmarketos-base-ui-audio-pipewire
+		pulseaudio
 	"
 
 	amove "usr/share/alsa/ucm2/conf.d/sm8150/Xiaomi Raphael.conf"
