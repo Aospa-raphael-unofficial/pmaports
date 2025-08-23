@@ -1,0 +1,5 @@
+load-module module-alsa-sink device=hw:0,0 sink_name=speaker
+load-module module-alsa-sink device=hw:0,1 sink_name=headphones
+load-module module-alsa-source device=hw:0,2 source_name=mic
+load-module module-alsa-source device=hw:0,3 source_name=mic2
+load-module module-alsa-source device=hw:0,4 source_name=headset
