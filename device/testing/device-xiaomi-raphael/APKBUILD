@@ -14,6 +14,7 @@ options="
 	"
 depends="
 	linux-xiaomi-raphael
+	make-dynpart-mappings
 	mkbootimg
 	postmarketos-base
 	mesa-vulkan-freedreno
@@ -66,10 +67,10 @@ nonfree_firmware() {
 		firmware-xiaomi-raphael-ipa
 		firmware-xiaomi-raphael-slpi
 		firmware-xiaomi-raphael-modem
-		firmware-xiaomi-raphael-touchscreen
 		firmware-xiaomi-raphael-venus
 		firmware-xiaomi-raphael-wlan
-		linux-firmware-ath11k
+		linux-firmware-ath10k
+		linux-firmware-qca
 		linux-firmware-qcom
 		msm-modem
 		pd-mapper
@@ -102,7 +103,7 @@ audio() {
 }
 
 sha512sums="
-657da31ee908264f8f13fe9a15b27c2f2a7bb09828e0e3b827de2cf3c39bdc548ba7c04ef4a7c0153b74e4fac7863a7b93abd09b3264f280cbc69958e3ce8216  deviceinfo
+e3e971f01aadb0cdf70b039987a814565c7a558a7c10608f9b672659c0a4fb307fb0ec3d9e84c89e6c015d16b3bb30f9fbe87f0302a7a8b10f7bfb87b6577bc2  deviceinfo
 d81350bb2c594d1c922b4eaa5f7ddd94ff5c52d915b6b34e01be2fddc5d624dea77343fab9b168acf889b55daa80a5deace6b81366d579816d5cc73b543a6826  modules-initfs
 522c784bd0facddd72b64cac78367fd35bab55d7aadc5bc1480d71d60bc58ae07fcc20ecf99268db5c345ea092e427623ed60cdd0279bd2344e26a79bd38ab98  HiFi.conf
 26690cbbe2fd2c89becef3d6c87f7b770720423c6ea17136d74305afafad4d66b3a889f9afebaba7aa9acbae638e4687ea96f2989b7cde1b8ce4da0103fb51ac  raphael.pa
