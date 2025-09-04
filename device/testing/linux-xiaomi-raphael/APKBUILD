@@ -1,71 +1,66 @@
-# Reference: <https://postmarketos.org/vendorkernel>
-# Kernel config based on: arch/arm64/configs/raphael_defconfig
-pkgname=linux-xiaomi-raphael
-pkgver=6.17.0
-pkgrel=2
+# Maintainer: Piyush Raj Chouhan <piyushchouhan1598@gmail.com>
+_flavor="xiaomi-raphael"
+pkgname=linux-$_flavor
+pkgver=6.16.0
+pkgrel=1
 pkgdesc="Xiaomi Mi 9T Pro / Redmi K20 Pro kernel fork"
 arch="aarch64"
 _carch="arm64"
-_flavor="xiaomi-raphael"
 url="https://kernel.org"
 license="GPL-2.0-only"
-options="!strip !check !tracedeps pmb:cross-native"
+options="!strip !check !tracedeps
+    pmb:cross-native
+    pmb:kconfigcheck-nftables
+    "
 makedepends="
-	bash
-	build-base
-	bc
-	bison
-	devicepkg-dev
-	flex
-	openssl-dev
-	perl
-	linux-headers
-	cpio
-"
+    bash
+    bison
+    findutils
+    flex
+    linux-headers
+    openssl-dev
+    perl
+    postmarketos-installkernel
+    python3
+    "
 
-# Source
-_repository="linux"
-_commit="a62fd895e8e8e261ccaa3d5906a6cf96f52fb69b"
 _config="config-$_flavor.$arch"
+_commit="090d21dc9212e7b520178d26dd60a6edebfcacb1"
 source="
-	$pkgname-$_commit.tar.gz::https://github.com/Aospa-raphael-unofficial/$_repository/archive/$_commit.tar.gz
-	$_config
-	"
-builddir="$srcdir/$_repository-$_commit"
-_outdir="out"
+    $pkgname-$_commit.tar.gz::https://github.com/Aospa-raphael-unofficial/linux/archive/$_commit.tar.gz
+    $_config
+"
+builddir="$srcdir/linux-$_commit"
 
 prepare() {
-	default_prepare
-	REPLACE_GCCH=0
-	. downstreamkernel_prepare
+    default_prepare
+    cp "$srcdir/config-$_flavor.$arch" .config
 }
 
 build() {
-	unset LDFLAGS
-	make -j$(nproc) O="$_outdir" ARCH="$_carch" CC="${CC:-gcc}" \
-		KBUILD_BUILD_VERSION="$((pkgrel + 1 ))-postmarketOS"
+    unset LDFLAGS
+    make -j$(nproc) ARCH="$_carch" CC="${CC:-gcc}" \
+        KBUILD_BUILD_VERSION="$((pkgrel + 1))-postmarketOS"
 }
 
 package() {
-	mkdir -p "$pkgdir"/boot
+    mkdir -p "$pkgdir"/boot
 
-	install -Dm644 "$builddir/out/arch/$_carch/boot/Image.gz" \
-		"$pkgdir/boot/vmlinuz"
+    # Install modules and DTBs
+    make zinstall modules_install dtbs_install \
+        ARCH="$_carch" \
+	INSTALL_PATH="$pkgdir"/boot/ \
+        INSTALL_MOD_PATH="$pkgdir" \
+        INSTALL_MOD_STRIP=1 \
+        INSTALL_DTBS_PATH="$pkgdir"/boot/dtbs
 
-	make -j2 O="$_outdir" modules_install dtbs_install \
-		ARCH="$_carch" \
-		INSTALL_PATH="$pkgdir"/boot/ \
-		INSTALL_MOD_PATH="$pkgdir" \
-		INSTALL_MOD_STRIP=1 \
-		INSTALL_DTBS_PATH="$pkgdir"/boot/dtbs
-	rm -f "$pkgdir"/lib/modules/*/build "$pkgdir"/lib/modules/*/source
+    rm -f "$pkgdir"/lib/modules/*/build "$pkgdir"/lib/modules/*/source
 
-	install -D "$builddir"/out/include/config/kernel.release \
-		"$pkgdir"/usr/share/kernel/$_flavor/kernel.release
+    install -D "$builddir/include/config/kernel.release" \
+        "$pkgdir"/usr/share/kernel/$_flavor/kernel.release
 }
 
-
 sha512sums="
-bedf51b008003456a3db40b395ae598307840f78fa6374e11dafc0535276fc601d6bd08387e8fa43d41b40f68808a01f953bd224a496a559d5304776385398a0  linux-xiaomi-raphael-a62fd895e8e8e261ccaa3d5906a6cf96f52fb69b.tar.gz
-865c74377ebdafe19f3dfe3ecd6e49a4f8fd35c969314fb7f927224e86a6d06a1033df3f35f7fada6ba9b1a0aeba413d010a0ba00be51f4724e74cc55a89d7e4  config-xiaomi-raphael.aarch64
+5d642fb108c26a7b786b5a1d071daa2219efa57f74db83446ecf54a5d17197f585f3f05102e85fde3e8de86e51333576cf83736fb05dd002a5fdf694f9bc1b61  linux-xiaomi-raphael-090d21dc9212e7b520178d26dd60a6edebfcacb1.tar.gz
+b776c5b11bb9021b341a72195838066a3f50cb7fad235ac8f53b3e6398ef0cdd2cb00ff058d5308917959a7500d501d54c718100c5227a9b957627c7d414d4ed  config-xiaomi-raphael.aarch64
 "
