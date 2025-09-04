@@ -1,6 +1,6 @@
 pkgname=firmware-xiaomi-raphael
-pkgver=20240929
-pkgrel=0
+pkgver=20250829
+pkgrel=1
 pkgdesc="Firmware for Xiaomi Mi 9T Pro / Redmi K20 Pro"
 arch="aarch64"
 _carch="arm64"
@@ -12,19 +12,18 @@ subpackages="
 	$pkgname-ipa
 	$pkgname-modem
 	$pkgname-slpi
-	$pkgname-touchscreen
 	$pkgname-venus
 	$pkgname-wlan
 	"
 
-url="https://github.com/dabao1955/pmos_firmware_xiaomi_raphael"
+url="https://github.com/Aospa-raphael-unofficial/pmos_firmware_xiaomi_raphael"
 license="proprietary"
 options="!check !strip !archcheck !tracedeps pmb:cross-native"
-_commit="89149ad98c7c8443946a518e9fb2ff2e2c83d54d"
+_commit="dd69364195d84f505e96ab9acd18bfe2b35d0844"
 source="
-	https://github.com/dabao1955/pmos_firmware_xiaomi_raphael/archive/$_commit.tar.gz
+	https://github.com/Aospa-raphael-unofficial/pmos_firmware_xiaomi_raphael/archive/$_commit.tar.gz
 	30-gpu-firmware.files"
-builddir="$srcdir/pmos_firmware_xiaomi_raphael-$_commit"
+	builddir="$srcdir/pmos_firmware_xiaomi_raphael-$_commit"
 
 package() {
 	# parent package is empty
@@ -39,6 +38,10 @@ adreno() {
 	depends="firmware-qcom-adreno-a650"
 	install -Dm644 "$builddir"/sm8150/raphael/a6* -t \
 		"$subpkgdir/lib/firmware/qcom/sm8150/Xiaomi/raphael/"
+        install -Dm644 "$builddir"/a630_sqe.fw -t \
+                "$subpkgdir/lib/firmware/qcom/"
+        install -Dm644 "$builddir"/a640_gmu.bin -t \
+                "$subpkgdir/lib/firmware/qcom/"
 }
 
 adsp() {
@@ -82,12 +85,6 @@ slpi() {
 	install -Dm644 "$builddir"/sm8150/raphael/slpi* -t \
 		"$subpkgdir/lib/firmware/qcom/sm8150/Xiaomi/raphael/"
 }
-touchscreen() {
-	pkgdesc="Xiaomi raphael touchscreen firmware"
-
-	install -Dm644 "$builddir"/sm8150/raphael/good* -t \
-		"$subpkgdir/lib/firmware/qcom/sm8150/Xiaomi/raphael/"
-}
 
 venus() {
 	pkgdesc="Xiaomi raphael venus firmware"
@@ -104,5 +101,6 @@ wlan() {
 }
 
 sha512sums="
-6a0305e70ffb581b957e5b987048931d3900416753189e967d2f2a5a5826ab30a929ebbd6f79fb64a80c00cef5bc6583bbd1c6825044b03f5d6fc352f84e318b  89149ad98c7c8443946a518e9fb2ff2e2c83d54d.tar.gz
-cbfb62e7890e87d2dd06b54edb0df90904a62d6f6e34c48a86e784a6277f5472760ac7775b2feea91abbb30ba26fd810719250618b91b23a8913a759c681d6cb  30-gpu-firmware.files"
+8b240a7553adb3a56e2a360d3cd31f81c63c934145acb3c2a685ce823151a835da9d44cecf5c0afdb6d801438d711d63cf83aed9d1bf68fd1fccd1daccb70ff6  dd69364195d84f505e96ab9acd18bfe2b35d0844.tar.gz
+755e266b66ca6b1ef1f7d90ed00da5ea8845113d906218123f8157893af31aaa0301fcf16be37482455e134ac07bf4d614656ea34091a921a7867e5d918aa456  30-gpu-firmware.files
+"
