@@ -1,7 +1,7 @@
 # Maintainer: Piyush Raj Chouhan <piyushchouhan1598@gmail.com>
 _flavor="xiaomi-raphael"
 pkgname=linux-$_flavor
-pkgver=6.16.0
+pkgver=6.14.0
 pkgrel=1
 pkgdesc="Xiaomi Mi 9T Pro / Redmi K20 Pro kernel fork"
 arch="aarch64"
@@ -25,7 +25,7 @@ makedepends="
     "
 
 _config="config-$_flavor.$arch"
-_commit="090d21dc9212e7b520178d26dd60a6edebfcacb1"
+_commit="acf0a3647abf06f35b9fed72ba5b76309ac2c42c"
 source="
     $pkgname-$_commit.tar.gz::https://github.com/Aospa-raphael-unofficial/linux/archive/$_commit.tar.gz
     $_config
@@ -61,6 +61,6 @@ package() {
 }
 
 sha512sums="
-5d642fb108c26a7b786b5a1d071daa2219efa57f74db83446ecf54a5d17197f585f3f05102e85fde3e8de86e51333576cf83736fb05dd002a5fdf694f9bc1b61  linux-xiaomi-raphael-090d21dc9212e7b520178d26dd60a6edebfcacb1.tar.gz
-b776c5b11bb9021b341a72195838066a3f50cb7fad235ac8f53b3e6398ef0cdd2cb00ff058d5308917959a7500d501d54c718100c5227a9b957627c7d414d4ed  config-xiaomi-raphael.aarch64
+1006d2fa8fce2a82fd7ee2d85d29712e2afcba49f9976917f3235a3054adf55a147b3b1dd667afda2e15dadcc12c3f799d71e689a9513b8c3a60200a0c0a2376  linux-xiaomi-raphael-acf0a3647abf06f35b9fed72ba5b76309ac2c42c.tar.gz
+043878dd1e026f9ced8e9e14abc2d7f871d9aa5067052ce5f496121027e4f24ddadec273982432ffe3964e67f329e6ad31ce0cd8d92823d26349e2c6f4eb7aad  config-xiaomi-raphael.aarch64
 "
