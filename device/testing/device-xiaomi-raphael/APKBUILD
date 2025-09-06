@@ -1,0 +1,56 @@
+# Maintainer: Piyush Raj Chouhan <piyushchouhan1598@gmail.com>
+# Reference: <https://postmarketos.org/devicepkg>
+pkgname=device-xiaomi-raphael
+pkgdesc="Xiaomi Mi 9T Pro / Redmi K20 Pro"
+pkgver=7
+pkgrel=1
+url="https://postmarketos.org"
+license="MIT"
+arch="aarch64"
+options="!check !archcheck"
+depends="
+	hexagonrpcd
+	linux-postmarketos-qcom-sm8150
+	make-dynpart-mappings
+	postmarketos-base
+	soc-qcom
+	soc-qcom-modem
+	soc-qcom-qbootctl
+	systemd-boot
+	unl0kr-fbforcerefresh
+"
+makedepends="devicepkg-dev"
+
+subpackages="
+	$pkgname-nonfree-firmware:nonfree_firmware
+"
+
+source="
+	81-libssc-180-degrees.rules
+	deviceinfo
+	kernel-cmdline.conf
+"
+
+build() {
+	devicepkg_build $startdir $pkgname
+}
+
+package() {
+	devicepkg_package $startdir $pkgname
+}
+
+nonfree_firmware() {
+	pkgdesc="GPU, venus, modem and sensor firmware"
+	depends="
+		firmware-xiaomi-raphael
+	"
+
+        install -Dm644 "$srcdir"/81-libssc-180-degrees.rules -t \
+                "$subpkgdir"/usr/lib/udev/rules.d
+}
+
+sha512sums="
+2c16ba75e0077b2b1eaefa4c73b287475505a1aeb291ec29316d41cc094277320f9d2aaabfd91eb1dc0f488ab2d61a94faef16e7afe0f1e226779113761b9a37  81-libssc-180-degrees.rules
+42bd2cc671cd74346f2615b2c1731798f4d57a99744b763706ac2d441f69fc49a7740b1cd0c346c809a054c4812e3b16715386597bf29455da79aee83eb03f79  deviceinfo
+57cfc61c6770bdc99460a36b29a3c7f92428da80a85ea00a78da168419236ce5ac8c945a97c1351d14e53b7fc9d2f9542c43c08f3348034c185d2c17f7351620  kernel-cmdline.conf
+"
