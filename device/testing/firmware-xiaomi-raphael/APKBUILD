@@ -1,0 +1,135 @@
+pkgname=firmware-xiaomi-raphael
+pkgver=20250910
+pkgrel=1
+pkgdesc="Firmware for Xiaomi Mi 9T Pro / Redmi K20 Pro"
+subpackages="
+	$pkgname-adsp
+	$pkgname-bt
+	$pkgname-cdsp
+	$pkgname-gpu
+	$pkgname-ipa
+	$pkgname-modem
+	$pkgname-sensors
+	$pkgname-venus
+	$pkgname-wlan
+    $pkgname-ath10k
+	"
+url="https://github.com/Aospa-raphael-unofficial/firmware-xiaomi-raphael"
+arch="aarch64"
+license="proprietary"
+options="!check !strip !archcheck !tracedeps pmb:cross-native"
+_commit="aedebb29728111b0c0258bb196c29bb4603f2d9b"
+source="
+	$pkgname-$_commit.tar.gz::$url/archive/$_commit/$pkgname-$_commit.tar.gz
+	adsp.files
+	bt.files
+	cdsp.files
+	gpu.files
+	ipa.files
+	modem.files
+	sensors.files
+	venus.files
+	wlan.files
+	ath10k.files
+"
+builddir="$srcdir/$pkgname-$_commit"
+
+package() {
+	# parent package is empty
+	mkdir -p "$pkgdir"
+}
+
+# Helper method for installing firmware files from a text file
+install_files() {
+	cd "$builddir"
+
+	while IFS="" read -r _i || [ -n "$_i" ]; do
+		[ ! -d $(dirname $_i) ] && mkdir -p $(dirname $_i)
+		echo $_i
+		install -Dm644 $_i "$subpkgdir/$_i"
+	done < "$srcdir/$1"
+}
+
+adsp() {
+	pkgdesc="Xiaomi Mi 9T Pro / Redmi K20 Pro adsp firmware"
+
+	mkdir "$subpkgdir"
+	install_files "adsp.files"
+}
+
+bt() {
+        pkgdesc="Xiaomi Mi 9T Pro / Redmi K20 Pro adsp firmware"
+
+        mkdir "$subpkgdir"
+        install_files "bt.files"
+}
+
+cdsp() {
+	pkgdesc="Xiaomi Mi 9T Pro / Redmi K20 Pro cdsp firmware"
+
+	mkdir "$subpkgdir"
+	install_files "cdsp.files"
+}
+
+gpu() {
+	pkgdesc="Xiaomi Mi 9T Pro / Redmi K20 Pro gpu firmware"
+
+	mkdir "$subpkgdir"
+	install_files "gpu.files"
+}
+
+ipa() {
+	pkgdesc="Xiaomi Mi 9T Pro / Redmi K20 Pro ipa firmware"
+
+	mkdir "$subpkgdir"
+	install_files "ipa.files"
+}
+
+modem() {
+	pkgdesc="Xiaomi Mi 9T Pro / Redmi K20 Pro modem firmware"
+
+	mkdir "$subpkgdir"
+	install_files "modem.files"
+}
+
+sensors() {
+	pkgdesc="Xiaomi Mi 9T / Redmi K20 sensors firmware"
+
+	mkdir "$subpkgdir"
+	install_files "sensors.files"
+}
+
+venus() {
+	pkgdesc="Xiaomi Mi 9T Pro / Redmi K20 Pro venus firmware"
+
+	mkdir "$subpkgdir"
+	install_files "venus.files"
+}
+
+wlan() {
+	pkgdesc="Xiaomi Mi 9T Pro / Redmi K20 Pro wlan firmware"
+
+	mkdir "$subpkgdir"
+	install_files "wlan.files"
+}
+
+ath10k() {
+        pkgdesc="Xiaomi Mi 9T Pro / Redmi K20 Pro wlan firmware"
+
+        mkdir "$subpkgdir"
+        install_files "ath10k.files"
+}
+
+sha512sums="
+95139fe65d34f4407877542dab100a584fec5b50c8d2e88fb537ee984c74c8582988c5042502bec4b5380ba5894194fde797588cd4198b41d746aa4f63663dee  firmware-xiaomi-raphael-aedebb29728111b0c0258bb196c29bb4603f2d9b.tar.gz
+b5e627621369224d0bd0056471bd03efd88e40b1b9c1a122a745a70ecbc7eb00186ccb99ee4baf80fc941a23737ceaf14609a79c8e311a21bb856d680fc9f86c  adsp.files
+3ab88ffaba07fe4f83fd2ec48612554ea10444e823d934237f156fca7284839390d9b2e445067a1a6ee66ef1f99e34dc9f4547c4988141f9c9689d8e98f4193d  bt.files
+104fdadedaf4b731f03dc43ac3981c600209edc391f8cc86baefdc2b86a6f61c8c6592b9de74e498a5b76c01a7f7740d1179dbbd88b498ba253b7b03eab2d172  cdsp.files
+6ab4505231b43b502f300094697bc419eb33407fa9d9424678ba6b72eb3d50df255ffee8ea74fd17a8e875a0e14c53987c4fb7e5f5a18b8bef3ef8ea0fb8455a  gpu.files
+46eda1b05a8bdb3036b22cbebe36fe55892c5e3c133d64d5c21cec0ab08270397fabd0381316e8594b95c10ace5243362b63759ddb02cdb5cd7ab6cf9ad830f6  ipa.files
+5a54b52be23849aba868a0bc305609d58af92ab5fc4fe96e6967f9281c2dbc516a9231b1c204c8111be1a8b379d1f21b341a836ffa5f99152f10b541d6995894  modem.files
+86aba23246d164c55b9f8fe2658c10f7ab26f09c48d700bc3443acbe161b14ea3a486ffe1c35338707024a008b0019bb522ec4aff2965675886cf7c62ed92dc1  sensors.files
+63033f7848bf7406bc0fedd46c5d497683c959db1b1a01aa3338fe66bd0f8a60483e8eef9cb8836f86a3607f1e204a3af7648973298ce674bc88c75ce67ffcaa  venus.files
+19caff1521106f276daefd0d5d8963aa8b141de0c3e3b62572b7db09127db6e55247a3917703804c1131b25d2030cb10063baf3781d9c6ec79a1b12ef96b900b  wlan.files
+d6c80e27c55dfb316cb993ac0df3987dcbe1c9fd73e07995bc320325e7943d279422f0cfc104b4562c8f9076493a2a1ab31a2798594201513061e9fb093917e2  ath10k.files
+"

@@ -1,0 +1,96 @@
+# Maintainer: Piyush Raj Chouhan <piyushchouhan1598@gmail.com>
+# Reference: <https://postmarketos.org/devicepkg>
+pkgname=device-xiaomi-raphael
+pkgdesc="Xiaomi Mi 9T Pro / Redmi K20 Pro"
+pkgver=3
+pkgrel=7
+url="https://postmarketos.org"
+license="MIT"
+arch="aarch64"
+options="!check !archcheck"
+depends="
+	alsa-ucm-conf-qcom-sm8150
+	bootmac
+	linux-firmware-ath10k
+	linux-postmarketos-qcom-sm8150
+	make-dynpart-mappings
+	msm-firmware-loader
+	msm-modem
+	msm-modem-uim-selection
+	postmarketos-base
+	soc-qcom
+	swclock-offset
+	systemd-boot
+	tqftpserv
+	unl0kr-fbforcerefresh
+"
+makedepends="devicepkg-dev"
+
+subpackages="
+	$pkgname-nonfree-firmware:nonfree_firmware
+"
+
+source="
+	30-initramfs-firmware.files
+	81-libssc-180-degrees.rules
+	hexagonrpcd.confd
+	deviceinfo
+	modules-initfs
+"
+
+build() {
+	devicepkg_build $startdir $pkgname
+}
+
+package() {
+	devicepkg_package $startdir $pkgname
+}
+
+nonfree_firmware() {
+	pkgdesc="GPU, venus, modem and sensor firmware"
+	depends="
+	        firmware-xiaomi-raphael-adsp
+		firmware-xiaomi-raphael-bt
+	        firmware-xiaomi-raphael-cdsp
+	        firmware-xiaomi-raphael-gpu
+	        firmware-xiaomi-raphael-ipa
+	        firmware-xiaomi-raphael-modem
+	        firmware-xiaomi-raphael-sensors   
+	        firmware-xiaomi-raphael-venus
+	        firmware-xiaomi-raphael-wlan
+	        firmware-xiaomi-raphael-ath10k
+		hexagonrpcd>=0.3.2-r3
+		soc-qcom-modem
+		hexagonrpcd
+	"
+
+        install -Dm644 "$srcdir"/30-initramfs-firmware.files -t \
+                "$subpkgdir"/usr/share/mkinitfs/files
+
+        install -Dm644 "$srcdir"/81-libssc-180-degrees.rules -t \
+                "$subpkgdir"/usr/lib/udev/rules.d
+
+        install -Dm644 "$srcdir"/hexagonrpcd.confd \
+                "$subpkgdir"/usr/share/hexagonrpcd/hexagonrpcd-sdsp.conf
+}
+
+openrc() {
+	install_if="$pkgname=$pkgver-r$pkgrel openrc"
+	install="$subpkgname.post-install"
+	depends="
+		hexagonrpcd-openrc
+		openrc
+		qbootctl-openrc
+		tqftpserv-openrc
+		"
+
+	mkdir -p "$subpkgdir"
+}
+
+sha512sums="
+f47fe4850d836a99d6acb522c6ba7d1756f4ea3a9f3abcf78b4dcbd0708a2299b4a523a0438970d8133d6ef405152b98e8ee70edfd1f3452c7b31206b4b89a2f  30-initramfs-firmware.files
+2c16ba75e0077b2b1eaefa4c73b287475505a1aeb291ec29316d41cc094277320f9d2aaabfd91eb1dc0f488ab2d61a94faef16e7afe0f1e226779113761b9a37  81-libssc-180-degrees.rules
+b1637e7084a6cab676ab28c806c13e43fc341c0b2ea4da9970f52463386e28ac6e7d24368ff98d7a6b96f87d476bc4811e741b0af36d8f50c96ba446209b6f56  hexagonrpcd.confd
+de3a588dde91ea521b8e269e4823f543099fb85fceac406fbf2e8a6d37d6cbfb6115cb4dc4da62488276d2e5d758858a4d0d5b3036fa2300bc3b0745b72cea14  deviceinfo
+2acf9e2a4a38c36866c8f31adfe83517f0773e35936920127e2cf49d43b24af67701deef81ffa610605caccbd560574f531e155f20da7126a27529ad8f70fd37  modules-initfs
+"

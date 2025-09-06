@@ -1,0 +1,24 @@
+# Maintainer: Piyush Raj Chouhan <piyushchouhan1598@gmail.com>
+pkgname=alsa-ucm-conf-qcom-sm8150
+pkgver=1
+pkgrel=0
+pkgdesc="ALSA UCM configuration for SM7150 devices"
+url="https://github.com/Aospa-raphael-unofficial/alsa-ucm-conf"
+arch="aarch64"
+license="BSD-3-Clause"
+provides="alsa-ucm-conf"
+provider_priority=1
+_commit="86fcac2f017b7fc51dd4a100f9e5dd3d66bf171a"
+source="$pkgname-$_commit.tar.gz::https://github.com/Aospa-raphael-unofficial/alsa-ucm-conf/archive/$_commit.tar.gz"
+options="!check"
+builddir="$srcdir/alsa-ucm-conf-$_commit"
+
+package() {
+	# install audio config files
+	mkdir -p "$pkgdir"/usr/share/alsa
+	cp -r ucm2 "$pkgdir"/usr/share/alsa/
+}
+
+sha512sums="
+264d4e795fee93c8512a7ed487a76810aa44d16cb659904a3e24d5ad90e790470d1aadb3dd1016806ac1ad1ee7a12d2f093c9be57539255465a1ec1683b3c4f9  alsa-ucm-conf-qcom-sm8150-86fcac2f017b7fc51dd4a100f9e5dd3d66bf171a.tar.gz
+"
