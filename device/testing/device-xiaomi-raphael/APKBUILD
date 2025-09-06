@@ -1,0 +1,44 @@
+# Maintainer: Piyush Raj Chouhan <piyushchouhan1598@gmail.com>
+# Reference: <https://postmarketos.org/devicepkg>
+
+pkgname=device-xiaomi-raphael
+pkgdesc="Xiaomi Mi 9T Pro / Redmi K20 Pro"
+pkgver=3
+pkgrel=2
+url="https://postmarketos.org"
+license="MIT"
+arch="aarch64"
+options="!check !archcheck"
+depends="
+	firmware-xiaomi-raphael-adsp
+	firmware-xiaomi-raphael-cdsp
+	firmware-xiaomi-raphael-gpu
+	firmware-xiaomi-raphael-ipa
+	firmware-xiaomi-raphael-modem
+	firmware-xiaomi-raphael-sensors
+	firmware-xiaomi-raphael-venus
+	firmware-xiaomi-raphael-wlan
+	linux-postmarketos-qcom-sm8150
+	make-dynpart-mappings
+	mkbootimg
+	postmarketos-base
+	soc-qcom
+"
+makedepends="devicepkg-dev"
+source="
+	deviceinfo
+	modules-initfs
+"
+
+build() {
+	devicepkg_build $startdir $pkgname
+}
+
+package() {
+	devicepkg_package $startdir $pkgname
+}
+
+sha512sums="
+5024ff5d780d1e89e636bd96da573451f064a46d2d376f20b19b29c817fe304629b8184be7c1c023777ba5d243c3241cfe20f4534ba8db432b8390a8f958e6b8  deviceinfo
+2acf9e2a4a38c36866c8f31adfe83517f0773e35936920127e2cf49d43b24af67701deef81ffa610605caccbd560574f531e155f20da7126a27529ad8f70fd37  modules-initfs
+"

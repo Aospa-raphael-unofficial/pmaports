@@ -1,0 +1,115 @@
+pkgname=firmware-xiaomi-raphael
+pkgver=1
+pkgrel=0
+pkgdesc="Firmware for Xiaomi Mi 9T Pro / Redmi K20 Pro"
+subpackages="
+	$pkgname-adsp
+	$pkgname-cdsp
+	$pkgname-gpu
+	$pkgname-ipa
+	$pkgname-modem
+	$pkgname-sensors
+	$pkgname-venus
+	$pkgname-wlan
+	"
+url="https://github.com/Aospa-raphael-unofficial/pmos_firmware_xiaomi_raphael"
+arch="aarch64"
+license="proprietary"
+options="!check !strip !archcheck !tracedeps pmb:cross-native"
+_commit="8cc6ac7982526ba122f1d53d307c6fc4e22367b2"
+source="
+	$pkgname-$_commit.tar.gz::$url/archive/$_commit/$pkgname-$_commit.tar.gz
+	adsp.files
+	cdsp.files
+	gpu.files
+	ipa.files
+	modem.files
+	sensors.files
+	venus.files
+	wlan.files
+"
+builddir="$srcdir/$pkgname-$_commit"
+
+package() {
+	# parent package is empty
+	mkdir -p "$pkgdir"
+}
+
+# Helper method for installing firmware files from a text file
+install_files() {
+	cd "$builddir"
+
+	while IFS="" read -r _i || [ -n "$_i" ]; do
+		[ ! -d $(dirname $_i) ] && mkdir -p $(dirname $_i)
+		echo $_i
+		install -Dm644 $_i "$subpkgdir/$_i"
+	done < "$srcdir/$1"
+}
+
+adsp() {
+	pkgdesc="Xiaomi Mi 9T Pro / Redmi K20 Pro adsp firmware"
+
+	mkdir "$subpkgdir"
+	install_files "adsp.files"
+}
+
+cdsp() {
+	pkgdesc="Xiaomi Mi 9T Pro / Redmi K20 Pro cdsp firmware"
+
+	mkdir "$subpkgdir"
+	install_files "cdsp.files"
+}
+
+gpu() {
+	pkgdesc="Xiaomi Mi 9T Pro / Redmi K20 Pro gpu firmware"
+
+	mkdir "$subpkgdir"
+	install_files "gpu.files"
+}
+
+ipa() {
+	pkgdesc="Xiaomi Mi 9T Pro / Redmi K20 Pro ipa firmware"
+
+	mkdir "$subpkgdir"
+	install_files "ipa.files"
+}
+
+modem() {
+	pkgdesc="Xiaomi Mi 9T Pro / Redmi K20 Pro modem firmware"
+
+	mkdir "$subpkgdir"
+	install_files "modem.files"
+}
+
+sensors() {
+	pkgdesc="Xiaomi Mi 9T / Redmi K20 sensors firmware"
+
+	mkdir "$subpkgdir"
+	install_files "sensors.files"
+}
+
+venus() {
+	pkgdesc="Xiaomi Mi 9T Pro / Redmi K20 Pro venus firmware"
+
+	mkdir "$subpkgdir"
+	install_files "venus.files"
+}
+
+wlan() {
+	pkgdesc="Xiaomi Mi 9T Pro / Redmi K20 Pro wlan firmware"
+
+	mkdir "$subpkgdir"
+	install_files "wlan.files"
+}
+
+sha512sums="
+31f4acfd10e9c211f2f1ac77c6bfcf7ae462432f1f40ddf92417e2e61bc1002fbdeb43b475dbce10c7b1823e619c878dbddbb036105596b39762ef2e84b7f2d7  firmware-xiaomi-raphael-8cc6ac7982526ba122f1d53d307c6fc4e22367b2.tar.gz
+3d7bced9b95a065a0c9ff8340675b33bb0a072cfa1d871052b51e802ee40be357bd225512f3abfe04a8945d898cbd0297d6c01d783a5b7e9950d69e94e182968  adsp.files
+104fdadedaf4b731f03dc43ac3981c600209edc391f8cc86baefdc2b86a6f61c8c6592b9de74e498a5b76c01a7f7740d1179dbbd88b498ba253b7b03eab2d172  cdsp.files
+6ab4505231b43b502f300094697bc419eb33407fa9d9424678ba6b72eb3d50df255ffee8ea74fd17a8e875a0e14c53987c4fb7e5f5a18b8bef3ef8ea0fb8455a  gpu.files
+46eda1b05a8bdb3036b22cbebe36fe55892c5e3c133d64d5c21cec0ab08270397fabd0381316e8594b95c10ace5243362b63759ddb02cdb5cd7ab6cf9ad830f6  ipa.files
+5a54b52be23849aba868a0bc305609d58af92ab5fc4fe96e6967f9281c2dbc516a9231b1c204c8111be1a8b379d1f21b341a836ffa5f99152f10b541d6995894  modem.files
+3f8707c8d05d9e926ed89082248127c4873999348bb63a7234cc947460ffa0f651a65f9e5a9ca5025bc86f0ca654f2836900e1dcd0bbcc9f2cc97e5879555043  sensors.files
+63033f7848bf7406bc0fedd46c5d497683c959db1b1a01aa3338fe66bd0f8a60483e8eef9cb8836f86a3607f1e204a3af7648973298ce674bc88c75ce67ffcaa  venus.files
+19caff1521106f276daefd0d5d8963aa8b141de0c3e3b62572b7db09127db6e55247a3917703804c1131b25d2030cb10063baf3781d9c6ec79a1b12ef96b900b  wlan.files
+"
