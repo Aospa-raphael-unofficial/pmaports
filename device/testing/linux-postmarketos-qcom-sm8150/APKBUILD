@@ -1,13 +1,14 @@
 # Maintainer: Pan Ortiz <panjeoc@proton.me>
 # Co-Maintainer: Viola Guerrera <guerrera.nicola@gmail.com>
+# Co-Maintainer: Piyush Raj Chouhan <piyuschouhan1598@gmail.com>
 _flavor="postmarketos-qcom-sm8150"
 pkgname=linux-$_flavor
-pkgver=6.16.0
-pkgrel=0
+pkgver=6.17.0
+pkgrel=2
 pkgdesc="Mainline Kernel fork for SM8150 devices"
 arch="aarch64"
 _carch="arm64"
-url="https://gitlab.com/sm8150-mainline/linux"
+url="https://github.com/Aospa-raphael-unofficial/linux"
 license="GPL-2.0-only"
 options="!strip !check !tracedeps
 	pmb:cross-native
@@ -25,14 +26,14 @@ makedepends="
 	"
 
 _config="config-$_flavor.$arch"
-_tag="v$pkgver-sm8150"
+_commit="df39bd20161796c98e6127f84cd186400dfc0713"
 
 # Source
 source="
-	linux-$_tag.tar.gz::https://gitlab.com/sm8150-mainline/linux/-/archive/$_tag/linux-$_tag.tar.gz
+	linux-$_commit.tar.gz::https://github.com/Aospa-raphael-unofficial/linux/archive/$_commit.tar.gz
 	$_config
 "
-builddir="$srcdir/linux-$_tag"
+builddir="$srcdir/linux-$_commit"
 
 prepare() {
 	default_prepare
@@ -46,14 +47,31 @@ build() {
 }
 
 package() {
-	mkdir -p "$pkgdir"/boot
+if [ -e "$builddir/arch/$_carch/boot/vmlinuz.efi" ]; then
+		# ZBOOT EFI decompressor for EFI booting
+		install -Dm644 "$builddir/arch/$_carch/boot/vmlinuz.efi" \
+			"$pkgdir/boot/linux.efi"
 
-	make zinstall modules_install dtbs_install \
+		# Old GZIP'd kernel image for boot.img compatibility
+		install -Dm644 "$builddir/arch/$_carch/boot/vmlinuz" \
+			"$pkgdir/boot/vmlinuz"
+	else
+		echo "WARNING: CONFIG_ZBOOT not enabled!"
+		install -Dm644 "$builddir/arch/$_carch/boot/Image.gz" \
+			"$pkgdir/boot/vmlinuz"
+	fi
+
+	make modules_install dtbs_install \
 		ARCH="$_carch" \
 		INSTALL_PATH="$pkgdir"/boot/ \
 		INSTALL_MOD_PATH="$pkgdir" \
 		INSTALL_MOD_STRIP=1 \
-		INSTALL_DTBS_PATH="$pkgdir"/boot/dtbs
+		INSTALL_DTBS_PATH="$pkgdir"/boot/dtbs-tmp
+
+	mkdir -p "$pkgdir"/boot/dtbs/qcom
+	cp -r "$pkgdir"/boot/dtbs-tmp/qcom/sm8150* "$pkgdir"/boot/dtbs/qcom
+	rm -rf "$pkgdir"/boot/dtbs-tmp
+
 	rm -f "$pkgdir"/lib/modules/*/build "$pkgdir"/lib/modules/*/source
 
 	install -D "$builddir"/include/config/kernel.release \
@@ -61,6 +79,6 @@ package() {
 }
 
 sha512sums="
-82977105d494eba0e2aedc6eecfcb4a99568f9b80396eca3e3d50c982551cb350572648e0dba80c357be7114cab58c69473831790a942519506d09c7c3c7259a  linux-v6.16.0-sm8150.tar.gz
-9070362cd0d82e3cc0fd7ed09e9609293c899b40c6ffa0b8fd7d5f44075b9ab65d4b4b5f905acd9bfbe83cbc6df80cfe5ae4c10dbb502125d4fd4dec4250122f  config-postmarketos-qcom-sm8150.aarch64
+cd9898dd5eec09af4559f8e968296714a4e947bee2146d28363799c373a3be7c39a763dbc969c338542794589faad5a5afdc4bf2ce6f189650a76973d3f0afe4  linux-df39bd20161796c98e6127f84cd186400dfc0713.tar.gz
+5f8d3c43bf26c0a3d8afa76b9b54b1bc63226a73097ab11f5afdf95a55a664ef93082517036180d865d8afe08e827e6d91a4c8af636c182d5c5af39beb067227  config-postmarketos-qcom-sm8150.aarch64
 "
