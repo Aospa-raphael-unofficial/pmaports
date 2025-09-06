@@ -1,0 +1,2 @@
+# Xiaomi Redmi K20 Pro specific hexagonrpcd firmware directory
+hexagonrpcd_fw_dir="/usr/share/qcom/"

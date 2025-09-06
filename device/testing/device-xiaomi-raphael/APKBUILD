@@ -1,0 +1,88 @@
+# Maintainer: Piyush Raj Chouhan <piyushchouhan1598@gmail.com>
+# Reference: <https://postmarketos.org/devicepkg>
+pkgname=device-xiaomi-raphael
+pkgdesc="Xiaomi Mi 9T Pro / Redmi K20 Pro"
+pkgver=5
+pkgrel=2
+url="https://postmarketos.org"
+license="MIT"
+arch="aarch64"
+options="!check !archcheck"
+depends="
+	bootmac
+	linux-firmware-ath10k
+	linux-firmware-qca
+	linux-postmarketos-qcom-sm8150
+	make-dynpart-mappings
+	msm-modem
+	msm-modem-uim-selection
+	postmarketos-base
+	soc-qcom
+	swclock-offset
+	systemd-boot
+	tqftpserv
+	unl0kr-fbforcerefresh
+"
+makedepends="devicepkg-dev"
+
+subpackages="
+	$pkgname-nonfree-firmware:nonfree_firmware
+"
+
+source="
+	81-libssc-180-degrees.rules
+	hexagonrpcd.confd
+	deviceinfo
+	kernel-cmdline.conf
+	modules-initfs
+"
+
+build() {
+	devicepkg_build $startdir $pkgname
+}
+
+package() {
+	devicepkg_package $startdir $pkgname
+}
+
+nonfree_firmware() {
+	pkgdesc="GPU, venus, modem and sensor firmware"
+	depends="
+		firmware-xiaomi-raphael-adsp
+		firmware-xiaomi-raphael-cdsp
+		firmware-xiaomi-raphael-gpu
+		firmware-xiaomi-raphael-ipa
+		firmware-xiaomi-raphael-modem
+		firmware-xiaomi-raphael-sensors   
+		firmware-xiaomi-raphael-venus
+		firmware-xiaomi-raphael-wlan
+		hexagonrpcd>=0.3.2-r3
+		soc-qcom-modem
+	"
+
+        install -Dm644 "$srcdir"/81-libssc-180-degrees.rules -t \
+                "$subpkgdir"/usr/lib/udev/rules.d
+
+        install -Dm644 "$srcdir"/hexagonrpcd.confd \
+                "$subpkgdir"/usr/share/hexagonrpcd/hexagonrpcd-adsp-sensorspd.conf
+}
+
+openrc() {
+	install_if="$pkgname=$pkgver-r$pkgrel openrc"
+	install="$subpkgname.post-install"
+	depends="
+		hexagonrpcd-openrc
+		openrc
+		tqftpserv-openrc
+		"
+
+	mkdir -p "$subpkgdir"
+}
+
+sha512sums="
+2c16ba75e0077b2b1eaefa4c73b287475505a1aeb291ec29316d41cc094277320f9d2aaabfd91eb1dc0f488ab2d61a94faef16e7afe0f1e226779113761b9a37  81-libssc-180-degrees.rules
+b1637e7084a6cab676ab28c806c13e43fc341c0b2ea4da9970f52463386e28ac6e7d24368ff98d7a6b96f87d476bc4811e741b0af36d8f50c96ba446209b6f56  hexagonrpcd.confd
+42bd2cc671cd74346f2615b2c1731798f4d57a99744b763706ac2d441f69fc49a7740b1cd0c346c809a054c4812e3b16715386597bf29455da79aee83eb03f79  deviceinfo
+57cfc61c6770bdc99460a36b29a3c7f92428da80a85ea00a78da168419236ce5ac8c945a97c1351d14e53b7fc9d2f9542c43c08f3348034c185d2c17f7351620  kernel-cmdline.conf
+14ee826d4d8d649e751d99f81bdeea495067a34473bc351f31f8cf762df34cefac358f7c967f39859a6927f7d1293144dc7d196e67a12c1e611c4168eff30435  modules-initfs
+"
