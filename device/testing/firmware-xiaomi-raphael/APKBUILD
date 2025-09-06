@@ -1,0 +1,125 @@
+pkgname=firmware-xiaomi-raphael
+pkgver=20251020
+pkgrel=0
+pkgdesc="Firmware for Xiaomi Mi 9T Pro / Redmi K20 Pro"
+subpackages="
+	$pkgname-adsp
+	$pkgname-cdsp
+	$pkgname-gpu
+	$pkgname-ipa
+	$pkgname-modem
+	$pkgname-sensors
+	$pkgname-venus
+	$pkgname-wlan
+	$pkgname-ath10k
+	"
+url="https://gitlab.postmarketos.org/Pc1598/firmware-xiaomi-raphael"
+arch="aarch64"
+license="proprietary"
+options="!check !strip !archcheck !tracedeps pmb:cross-native"
+_commit="f5611da83265f39063f6f40126b822c0042505dd"
+source="
+	$pkgname-$_commit.tar::$url/-/archive/$_commit/$pkgname-$_commit.tar
+	adsp.files
+	cdsp.files
+	gpu.files
+	ipa.files
+	modem.files
+	sensors.files
+	venus.files
+	wlan.files
+	ath10k.files
+"
+builddir="$srcdir/$pkgname-$_commit"
+
+package() {
+	# parent package is empty
+	mkdir -p "$pkgdir"
+}
+
+# Helper method for installing firmware files from a text file
+install_files() {
+	cd "$builddir"
+
+	while IFS="" read -r _i || [ -n "$_i" ]; do
+		[ ! -d $(dirname $_i) ] && mkdir -p $(dirname $_i)
+		echo $_i
+		install -Dm644 $_i "$subpkgdir/$_i"
+	done < "$srcdir/$1"
+}
+
+adsp() {
+	pkgdesc="Xiaomi Mi 9T Pro / Redmi K20 Pro adsp firmware"
+
+	mkdir "$subpkgdir"
+	install_files "adsp.files"
+}
+
+cdsp() {
+	pkgdesc="Xiaomi Mi 9T Pro / Redmi K20 Pro cdsp firmware"
+
+	mkdir "$subpkgdir"
+	install_files "cdsp.files"
+}
+
+gpu() {
+	pkgdesc="Xiaomi Mi 9T Pro / Redmi K20 Pro gpu firmware"
+
+	mkdir "$subpkgdir"
+	install_files "gpu.files"
+}
+
+ipa() {
+	pkgdesc="Xiaomi Mi 9T Pro / Redmi K20 Pro ipa firmware"
+
+	mkdir "$subpkgdir"
+	install_files "ipa.files"
+}
+
+modem() {
+	pkgdesc="Xiaomi Mi 9T Pro / Redmi K20 Pro modem firmware"
+
+	mkdir "$subpkgdir"
+	install_files "modem.files"
+}
+
+sensors() {
+	pkgdesc="Xiaomi Mi 9T / Redmi K20 sensors firmware"
+
+	mkdir "$subpkgdir"
+	install_files "sensors.files"
+}
+
+venus() {
+	pkgdesc="Xiaomi Mi 9T Pro / Redmi K20 Pro venus firmware"
+
+	mkdir "$subpkgdir"
+	install_files "venus.files"
+}
+
+wlan() {
+	pkgdesc="Xiaomi Mi 9T Pro / Redmi K20 Pro wlan firmware"
+
+	mkdir "$subpkgdir"
+	install_files "wlan.files"
+}
+
+ath10k() {
+        pkgdesc="Xiaomi Mi 9T Pro / Redmi K20 Pro wlan firmware"
+
+        mkdir "$subpkgdir"
+        install_files "ath10k.files"
+}
+
+sha512sums="
+4e28a4395b840ab20346d54af31b74af7c151195467d4f31c8b71661babb154e660c525a949738e2eed6d8a3155467051fdd33f0d8a3477a8c5dfce5923cfe13  firmware-xiaomi-raphael-f5611da83265f39063f6f40126b822c0042505dd.tar
+be0a5de0bbb67e7769a03dd668b1e983b5bc46035960850376d25bbd367b978d5195571ed477096fd3b0ab73fce17d5c7cb35646327adb1e8464ee11477a6cb7  adsp.files
+e7bbc3541d4a7579f252023c53adc1fd718269b8caa3593a154b676fac73fd6d8d6e426e50dfca709338012d0719a301fb419f026c4676ccd658dfc10409ab56  cdsp.files
+80c59de6c52913a5376b7009325eab6569e759c3dbb313c7c39691e04cb65a4e8c614d5ebd3b94731f8822df678d4160d54fa3579a4d1ff021e55ea65473ed94  gpu.files
+9a3f20c48bd7805f6c4ca5fe87fc7e0c7bedb8d90cbc77394a06668cf8356d988a35e7d8d5b0f0cc2d94334ca0f1c351207804b17885d5d21b6feeee7abe9272  ipa.files
+3f41793ba7c16ec2e12fef7f8c426739b551ac661da7aa561ede0e918c5166f08a52583079993a68c05654ab38a344be2c3f83e35880ce008b55872fddbf600a  modem.files
+86aba23246d164c55b9f8fe2658c10f7ab26f09c48d700bc3443acbe161b14ea3a486ffe1c35338707024a008b0019bb522ec4aff2965675886cf7c62ed92dc1  sensors.files
+8d66505d350981001109848c5572a7f4c5e4bd4c9fc3f77c69f47ede3fadd3d874aea72c8b20b2d55ebc5d2e2702e47e4903184501e1ddd1c5a3624ab3365bc8  venus.files
+77caf01033c321cde03e56058951050c73a571b8f5293cabb2020f9f49b6420d1cbac19c14ac67208a8695b9b2b8fcc507e313b5807c2fe66b3fd860d87e8b7b  wlan.files
+d6c80e27c55dfb316cb993ac0df3987dcbe1c9fd73e07995bc320325e7943d279422f0cfc104b4562c8f9076493a2a1ab31a2798594201513061e9fb093917e2  ath10k.files
+"
