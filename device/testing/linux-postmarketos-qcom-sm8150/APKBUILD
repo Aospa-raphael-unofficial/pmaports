@@ -1,83 +1,93 @@
 # Maintainer: Pan Ortiz <panjeoc@proton.me>
 # Co-Maintainer: Viola Guerrera <guerrera.nicola@gmail.com>
+# Co-Maintainer: Piyush Raj Chouhan <piyuschouhan1598@gmail.com>
+
 _flavor="postmarketos-qcom-sm8150"
 pkgname=linux-$_flavor
-pkgver=6.17.0
-pkgrel=0
+pkgver=6.19.0
+pkgrel=1
 pkgdesc="Mainline Kernel fork for SM8150 devices"
 arch="aarch64"
 _carch="arm64"
-url="https://gitlab.com/sm8150-mainline/linux"
+
+url="https://github.com/Aospa-raphael-unofficial/linux"
 license="GPL-2.0-only"
+
 options="!strip !check !tracedeps
 	pmb:cross-native
 	pmb:kconfigcheck-nftables
-	"
+"
+
 makedepends="
 	bison
+	clang
 	findutils
 	flex
+	lld
+	llvm
 	openssl-dev
 	perl
 	postmarketos-installkernel
 	python3
-	"
-
-_tag="v$pkgver-sm8150"
-
-# Source
-source="
-	linux-$_tag.tar.gz::$url/-/archive/$_tag/linux-$_tag.tar.gz
-	config-$_flavor.$arch
-	0001-lid-switch-fix.patch
 "
-builddir="$srcdir/linux-$_tag"
+
+_config="config-$_flavor.$arch"
+_commit="19fdd7141162f7789edfe76d22727bc8ecd45cf6"
+
+source="
+	linux-$_commit.tar.gz::https://github.com/Aospa-raphael-unofficial/linux/archive/$_commit.tar.gz
+	$_config
+"
+
+builddir="$srcdir/linux-$_commit"
 
 prepare() {
 	default_prepare
-	cp "$srcdir/config-$_flavor.$arch" .config
+	cp "$srcdir/$_config" .config
+	yes "" | make ARCH="$_carch" olddefconfig
 }
 
 build() {
 	unset LDFLAGS
-	make ARCH="$_carch" CC="${CC:-gcc}" \
-		KBUILD_BUILD_VERSION="$((pkgrel + 1 ))-$_flavor"
+	make ARCH="$_carch" LLVM=1 \
+		KBUILD_BUILD_VERSION="$((pkgrel + 1))-$_flavor"
 }
 
 package() {
 	if [ -e "$builddir/arch/$_carch/boot/vmlinuz.efi" ]; then
-		# ZBOOT EFI decompressor for EFI booting
 		install -Dm644 "$builddir/arch/$_carch/boot/vmlinuz.efi" \
 			"$pkgdir/boot/linux.efi"
+	fi
 
-		# Old GZIP'd kernel image for boot.img compatibility
+	if [ -e "$builddir/arch/$_carch/boot/vmlinuz" ]; then
 		install -Dm644 "$builddir/arch/$_carch/boot/vmlinuz" \
 			"$pkgdir/boot/vmlinuz"
 	else
-		echo "WARNING: CONFIG_ZBOOT not enabled!"
 		install -Dm644 "$builddir/arch/$_carch/boot/Image.gz" \
 			"$pkgdir/boot/vmlinuz"
 	fi
 
 	make modules_install dtbs_install \
 		ARCH="$_carch" \
-		INSTALL_PATH="$pkgdir"/boot/ \
+		LLVM=1 \
+		INSTALL_PATH="$pkgdir/boot" \
 		INSTALL_MOD_PATH="$pkgdir" \
 		INSTALL_MOD_STRIP=1 \
-		INSTALL_DTBS_PATH="$pkgdir"/boot/dtbs-tmp
+		INSTALL_DTBS_PATH="$pkgdir/boot/dtbs-tmp"
 
-	mkdir -p "$pkgdir"/boot/dtbs/qcom
-	cp -r "$pkgdir"/boot/dtbs-tmp/qcom/sm8150* "$pkgdir"/boot/dtbs/qcom
+	mkdir -p "$pkgdir/boot/dtbs/qcom"
+	cp -r "$pkgdir"/boot/dtbs-tmp/qcom/sm8150* \
+		"$pkgdir"/boot/dtbs/qcom
 	rm -rf "$pkgdir"/boot/dtbs-tmp
 
-	rm -f "$pkgdir"/lib/modules/*/build "$pkgdir"/lib/modules/*/source
+	rm -f "$pkgdir"/lib/modules/*/build \
+	      "$pkgdir"/lib/modules/*/source
 
 	install -D "$builddir"/include/config/kernel.release \
-		"$pkgdir"/usr/share/kernel/$_flavor/kernel.release
+		"$pkgdir/usr/share/kernel/$_flavor/kernel.release"
 }
 
 sha512sums="
-274270bb0391bca972b1dffae778ff6fc372457b658e9252104d9894c9f24739e25df7021378cf0ac9c650cc417d0cdcdf1baa88bfdcd494920ee183298e1f34  linux-v6.17.0-sm8150.tar.gz
-72aecca7ac7fb0d9a13d9f33be499673d676123e6fdfe0814b2d25f49d698cca614a4188f976ffa2fa5e94a7918a24ab079ab9091dadabcf70d068a13d4f8314  config-postmarketos-qcom-sm8150.aarch64
-15422195814314d8f9ce905408d1256bec753ca1b58babc59391c4cb8b4fbbc9034c622129d52964ccceb39e6f4326f0eae5ca9271496e1a0432416ecd09cc1d  0001-lid-switch-fix.patch
+7075cc78e1bb63614756dfef2f911b431968864fbbb5d152f7a3db77e671cf7197e23f83d9905d6ba954277e858f7e4b2b6ef13f6f240daec21fad00dd8683df  linux-19fdd7141162f7789edfe76d22727bc8ecd45cf6.tar.gz
+69d43cd53ee8cc2408e978757f12654e49e72b3521f1d61031833f334ec6d1a3514879d628d7dc5549729cb4b8c6721bc4d52d7f7622afa6b7ce18a7d995e38b  config-postmarketos-qcom-sm8150.aarch64
 "
