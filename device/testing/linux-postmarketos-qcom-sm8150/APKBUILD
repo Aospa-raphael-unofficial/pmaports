@@ -1,13 +1,14 @@
 # Maintainer: Pan Ortiz <panjeoc@proton.me>
 # Co-Maintainer: Viola Guerrera <guerrera.nicola@gmail.com>
+# Co-Maintainer: Piyush Raj Chouhan <piyuschouhan1598@gmail.com>
 _flavor="postmarketos-qcom-sm8150"
 pkgname=linux-$_flavor
-pkgver=6.16.0
+pkgver=6.17.0
 pkgrel=0
 pkgdesc="Mainline Kernel fork for SM8150 devices"
 arch="aarch64"
 _carch="arm64"
-url="https://gitlab.com/sm8150-mainline/linux"
+url="https://github.com/Aospa-raphael-unofficial/linux"
 license="GPL-2.0-only"
 options="!strip !check !tracedeps
 	pmb:cross-native
@@ -25,14 +26,14 @@ makedepends="
 	"
 
 _config="config-$_flavor.$arch"
-_tag="v$pkgver-sm8150"
+_commit="c7828828a35377ee8d2aa6e5e2f76e22257a504e"
 
 # Source
 source="
-	linux-$_tag.tar.gz::https://gitlab.com/sm8150-mainline/linux/-/archive/$_tag/linux-$_tag.tar.gz
+	linux-$_commit.tar.gz::https://github.com/Aospa-raphael-unofficial/linux/archive/$_commit.tar.gz
 	$_config
 "
-builddir="$srcdir/linux-$_tag"
+builddir="$srcdir/linux-$_commit"
 
 prepare() {
 	default_prepare
@@ -61,6 +62,6 @@ package() {
 }
 
 sha512sums="
-82977105d494eba0e2aedc6eecfcb4a99568f9b80396eca3e3d50c982551cb350572648e0dba80c357be7114cab58c69473831790a942519506d09c7c3c7259a  linux-v6.16.0-sm8150.tar.gz
-9070362cd0d82e3cc0fd7ed09e9609293c899b40c6ffa0b8fd7d5f44075b9ab65d4b4b5f905acd9bfbe83cbc6df80cfe5ae4c10dbb502125d4fd4dec4250122f  config-postmarketos-qcom-sm8150.aarch64
+bb07ff521cd9940c879ebc8a7e9d0c51eb70539a2e8e25da03323c1688dea8722bd9095efb7815d3f5eb91351c838cf9a9e62e83c1a9f9f1effd0c098162b60a  linux-c7828828a35377ee8d2aa6e5e2f76e22257a504e.tar.gz
+5c338f6f7e9a78d64c78618ba0d2c7d2c0fa917f417ba78e79f5a079203d515255d54b62728c23519c87c03dcd08a95e9ea16a5fd1d5f6ffcba3dbc0c8ef00fa  config-postmarketos-qcom-sm8150.aarch64
 "
