@@ -17,7 +17,7 @@ url="https://github.com/Aospa-raphael-unofficial/firmware-xiaomi-raphael"
 arch="aarch64"
 license="proprietary"
 options="!check !strip !archcheck !tracedeps pmb:cross-native"
-_commit="2a5aa7187c83d00f5f7e0c94a03cd339867e83df"
+_commit="bf5236b7be248c6c6bd44136e30ca286125b877a"
 source="
 	$pkgname-$_commit.tar.gz::$url/archive/$_commit/$pkgname-$_commit.tar.gz
 	adsp.files
@@ -112,7 +112,7 @@ ath10k() {
 }
 
 sha512sums="
-7b92782a9566d28509d0d4753c212668163c8deab8f7a8f914a839ac1a3649bf3354ab5d058e6cedec26b78735a7f0f9927d0acbcd29bda683fd558585d84999  firmware-xiaomi-raphael-2a5aa7187c83d00f5f7e0c94a03cd339867e83df.tar.gz
+0e629b8b738d8d0aad94cc5c270ac3c227359738b7eb27ebed8d00ddcf5ef459818894fe3139083b5938cbc63c142442aa5d05e5f2b3188154f7512c558429de  firmware-xiaomi-raphael-bf5236b7be248c6c6bd44136e30ca286125b877a.tar.gz
 b5e627621369224d0bd0056471bd03efd88e40b1b9c1a122a745a70ecbc7eb00186ccb99ee4baf80fc941a23737ceaf14609a79c8e311a21bb856d680fc9f86c  adsp.files
 104fdadedaf4b731f03dc43ac3981c600209edc391f8cc86baefdc2b86a6f61c8c6592b9de74e498a5b76c01a7f7740d1179dbbd88b498ba253b7b03eab2d172  cdsp.files
 6ab4505231b43b502f300094697bc419eb33407fa9d9424678ba6b72eb3d50df255ffee8ea74fd17a8e875a0e14c53987c4fb7e5f5a18b8bef3ef8ea0fb8455a  gpu.files
