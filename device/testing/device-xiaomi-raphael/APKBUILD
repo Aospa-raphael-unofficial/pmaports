@@ -1,6 +1,5 @@
 # Maintainer: Piyush Raj Chouhan <piyushchouhan1598@gmail.com>
 # Reference: <https://postmarketos.org/devicepkg>
-
 pkgname=device-xiaomi-raphael
 pkgdesc="Xiaomi Mi 9T Pro / Redmi K20 Pro"
 pkgver=3
@@ -41,6 +40,6 @@ package() {
 }
 
 sha512sums="
-5024ff5d780d1e89e636bd96da573451f064a46d2d376f20b19b29c817fe304629b8184be7c1c023777ba5d243c3241cfe20f4534ba8db432b8390a8f958e6b8  deviceinfo
+de3a588dde91ea521b8e269e4823f543099fb85fceac406fbf2e8a6d37d6cbfb6115cb4dc4da62488276d2e5d758858a4d0d5b3036fa2300bc3b0745b72cea14  deviceinfo
 2acf9e2a4a38c36866c8f31adfe83517f0773e35936920127e2cf49d43b24af67701deef81ffa610605caccbd560574f531e155f20da7126a27529ad8f70fd37  modules-initfs
 "
