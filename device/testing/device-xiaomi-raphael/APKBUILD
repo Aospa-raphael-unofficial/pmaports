@@ -3,7 +3,7 @@
 pkgname=device-xiaomi-raphael
 pkgdesc="Xiaomi Mi 9T Pro / Redmi K20 Pro"
 pkgver=3
-pkgrel=3
+pkgrel=4
 url="https://postmarketos.org"
 license="MIT"
 arch="aarch64"
@@ -24,6 +24,7 @@ depends="
 	mkbootimg
 	postmarketos-base
 	soc-qcom
+	systemd-boot
 "
 makedepends="devicepkg-dev"
 source="

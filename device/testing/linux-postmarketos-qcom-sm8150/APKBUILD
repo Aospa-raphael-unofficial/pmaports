@@ -4,7 +4,7 @@
 _flavor="postmarketos-qcom-sm8150"
 pkgname=linux-$_flavor
 pkgver=6.17.0
-pkgrel=0
+pkgrel=1
 pkgdesc="Mainline Kernel fork for SM8150 devices"
 arch="aarch64"
 _carch="arm64"
@@ -26,7 +26,7 @@ makedepends="
 	"
 
 _config="config-$_flavor.$arch"
-_commit="da3e1fb6e56f74e47339bafef9337513921fdbdc"
+_commit="7ed0042440dedf5fab10f77987378186f8c83ad2"
 
 # Source
 source="
@@ -47,14 +47,31 @@ build() {
 }
 
 package() {
-	mkdir -p "$pkgdir"/boot
+if [ -e "$builddir/arch/$_carch/boot/vmlinuz.efi" ]; then
+		# ZBOOT EFI decompressor for EFI booting
+		install -Dm644 "$builddir/arch/$_carch/boot/vmlinuz.efi" \
+			"$pkgdir/boot/linux.efi"
 
-	make zinstall modules_install dtbs_install \
+		# Old GZIP'd kernel image for boot.img compatibility
+		install -Dm644 "$builddir/arch/$_carch/boot/vmlinuz" \
+			"$pkgdir/boot/vmlinuz"
+	else
+		echo "WARNING: CONFIG_ZBOOT not enabled!"
+		install -Dm644 "$builddir/arch/$_carch/boot/Image.gz" \
+			"$pkgdir/boot/vmlinuz"
+	fi
+
+	make modules_install dtbs_install \
 		ARCH="$_carch" \
 		INSTALL_PATH="$pkgdir"/boot/ \
 		INSTALL_MOD_PATH="$pkgdir" \
 		INSTALL_MOD_STRIP=1 \
-		INSTALL_DTBS_PATH="$pkgdir"/boot/dtbs
+		INSTALL_DTBS_PATH="$pkgdir"/boot/dtbs-tmp
+
+	mkdir -p "$pkgdir"/boot/dtbs/qcom
+	cp -r "$pkgdir"/boot/dtbs-tmp/qcom/sm8150* "$pkgdir"/boot/dtbs/qcom
+	rm -rf "$pkgdir"/boot/dtbs-tmp
+
 	rm -f "$pkgdir"/lib/modules/*/build "$pkgdir"/lib/modules/*/source
 
 	install -D "$builddir"/include/config/kernel.release \
@@ -62,6 +79,6 @@ package() {
 }
 
 sha512sums="
-4e22b76764c4e8718aa2b18a312b6aed2751f689c163d90d19cbff7b014da937fdae1e4f2679fb7f26ffb2d0e38a89325f9d1d014b10f53473f286b4ce6edbb3  linux-da3e1fb6e56f74e47339bafef9337513921fdbdc.tar.gz
-5c338f6f7e9a78d64c78618ba0d2c7d2c0fa917f417ba78e79f5a079203d515255d54b62728c23519c87c03dcd08a95e9ea16a5fd1d5f6ffcba3dbc0c8ef00fa  config-postmarketos-qcom-sm8150.aarch64
+f3c6720e53580af0e0959c3a37cf0957f68fd4f450174a621caf1b9e8e5a57415c58f15100263d6a2f4eed1a8faa03da407c781d46524418db2a078debb97e1e  linux-7ed0042440dedf5fab10f77987378186f8c83ad2.tar.gz
+dc77ce250facc3c9fc7f0f1c7fd7d6ec4cb692847e48a06ff9366fc9f95ddb4b75599e11c23a111dec6f1fbf5deffaf8123660ef675a14749e78b9a14c78a1e6  config-postmarketos-qcom-sm8150.aarch64
 "
