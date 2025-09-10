@@ -11,7 +11,7 @@ subpackages="
 	$pkgname-sensors
 	$pkgname-venus
 	$pkgname-wlan
-        $pkgname-ath10k
+    $pkgname-ath10k
 	"
 url="https://github.com/Aospa-raphael-unofficial/firmware-xiaomi-raphael"
 arch="aarch64"
