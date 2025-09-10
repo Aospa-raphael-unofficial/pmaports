@@ -18,7 +18,7 @@ depends="
 	firmware-xiaomi-raphael-sensors
 	firmware-xiaomi-raphael-venus
 	firmware-xiaomi-raphael-wlan
-        firmware-xiaomi-raphael-ath10k
+    firmware-xiaomi-raphael-ath10k
 	linux-firmware-ath10k
 	linux-firmware-qca
 	linux-firmware-qcom
