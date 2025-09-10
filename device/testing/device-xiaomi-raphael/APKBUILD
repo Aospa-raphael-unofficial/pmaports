@@ -10,28 +10,25 @@ arch="aarch64"
 options="!check !archcheck"
 depends="
 	alsa-ucm-conf-qcom-sm8150
-	firmware-xiaomi-raphael-adsp
-	firmware-xiaomi-raphael-cdsp
-	firmware-xiaomi-raphael-gpu
-	firmware-xiaomi-raphael-ipa
-	firmware-xiaomi-raphael-modem
-	firmware-xiaomi-raphael-sensors
-	firmware-xiaomi-raphael-venus
-	firmware-xiaomi-raphael-wlan
-    firmware-xiaomi-raphael-ath10k
+	bootmac
+	firmware-xiaomi-raphael   
+	hexagonfs-firmware-loader
+	hexagonrpcd
 	linux-firmware-ath10k
 	linux-firmware-qca
 	linux-firmware-qcom
 	linux-postmarketos-qcom-sm8150
 	make-dynpart-mappings
-	mkbootimg
 	msm-firmware-loader
 	msm-modem
 	msm-modem-uim-selection
 	postmarketos-base
-	swclock-offset
+	postmarketos-base
 	soc-qcom
+	swclock-offset
 	systemd-boot
+	tqftpserv
+	unl0kr-fbforcerefresh
 "
 makedepends="devicepkg-dev"
 source="
@@ -45,6 +42,25 @@ build() {
 
 package() {
 	devicepkg_package $startdir $pkgname
+
+	install -Dm644 "$srcdir"/30-initramfs-firmware.files -t \
+		"$pkgdir"/usr/share/mkinitfs/files
+
+	install -Dm644 "$srcdir"/81-libssc-180-degrees.rules -t \
+		"$pkgdir"/usr/lib/udev/rules.d
+}
+
+openrc() {
+	install_if="$pkgname=$pkgver-r$pkgrel openrc"
+	install="$subpkgname.post-install"
+	depends="
+		hexagonrpcd-openrc
+		openrc
+		qbootctl-openrc
+		tqftpserv-openrc
+		"
+
+	mkdir -p "$subpkgdir"
 }
 
 sha512sums="

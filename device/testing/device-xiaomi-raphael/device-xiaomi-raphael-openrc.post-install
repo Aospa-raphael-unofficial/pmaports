@@ -1,0 +1,3 @@
+#!/bin/sh
+rc-update add hexagonrpcd-sdsp
+rc-update add tqftpserv boot
