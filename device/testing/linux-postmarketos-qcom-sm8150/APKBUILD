@@ -4,7 +4,7 @@
 _flavor="postmarketos-qcom-sm8150"
 pkgname=linux-$_flavor
 pkgver=6.17.0
-pkgrel=1
+pkgrel=2
 pkgdesc="Mainline Kernel fork for SM8150 devices"
 arch="aarch64"
 _carch="arm64"
@@ -26,7 +26,7 @@ makedepends="
 	"
 
 _config="config-$_flavor.$arch"
-_commit="7ed0042440dedf5fab10f77987378186f8c83ad2"
+_commit="df39bd20161796c98e6127f84cd186400dfc0713"
 
 # Source
 source="
@@ -79,6 +79,6 @@ if [ -e "$builddir/arch/$_carch/boot/vmlinuz.efi" ]; then
 }
 
 sha512sums="
-f3c6720e53580af0e0959c3a37cf0957f68fd4f450174a621caf1b9e8e5a57415c58f15100263d6a2f4eed1a8faa03da407c781d46524418db2a078debb97e1e  linux-7ed0042440dedf5fab10f77987378186f8c83ad2.tar.gz
-dc77ce250facc3c9fc7f0f1c7fd7d6ec4cb692847e48a06ff9366fc9f95ddb4b75599e11c23a111dec6f1fbf5deffaf8123660ef675a14749e78b9a14c78a1e6  config-postmarketos-qcom-sm8150.aarch64
+cd9898dd5eec09af4559f8e968296714a4e947bee2146d28363799c373a3be7c39a763dbc969c338542794589faad5a5afdc4bf2ce6f189650a76973d3f0afe4  linux-df39bd20161796c98e6127f84cd186400dfc0713.tar.gz
+5f8d3c43bf26c0a3d8afa76b9b54b1bc63226a73097ab11f5afdf95a55a664ef93082517036180d865d8afe08e827e6d91a4c8af636c182d5c5af39beb067227  config-postmarketos-qcom-sm8150.aarch64
 "

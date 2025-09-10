@@ -3,12 +3,13 @@
 pkgname=device-xiaomi-raphael
 pkgdesc="Xiaomi Mi 9T Pro / Redmi K20 Pro"
 pkgver=3
-pkgrel=4
+pkgrel=6
 url="https://postmarketos.org"
 license="MIT"
 arch="aarch64"
 options="!check !archcheck"
 depends="
+	alsa-ucm-conf-qcom-sm8150
 	firmware-xiaomi-raphael-adsp
 	firmware-xiaomi-raphael-cdsp
 	firmware-xiaomi-raphael-gpu
@@ -19,10 +20,16 @@ depends="
 	firmware-xiaomi-raphael-wlan
         firmware-xiaomi-raphael-ath10k
 	linux-firmware-ath10k
+	linux-firmware-qca
+	linux-firmware-qcom
 	linux-postmarketos-qcom-sm8150
 	make-dynpart-mappings
 	mkbootimg
+	msm-firmware-loader
+	msm-modem
+	msm-modem-uim-selection
 	postmarketos-base
+	swclock-offset
 	soc-qcom
 	systemd-boot
 "
