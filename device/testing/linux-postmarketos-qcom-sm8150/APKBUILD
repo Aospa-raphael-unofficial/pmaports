@@ -26,7 +26,7 @@ makedepends="
 	"
 
 _config="config-$_flavor.$arch"
-_commit="bb8e6e72702c73c90b9009c9b140c0575a69a94d"
+_commit="d8303fb13d4784415cc07365dcbecd324002d675"
 
 # Source
 source="
@@ -79,6 +79,6 @@ if [ -e "$builddir/arch/$_carch/boot/vmlinuz.efi" ]; then
 }
 
 sha512sums="
-75d6a0ce52ab66e9c96fbd7f0d98c9957515b862a8da723f69960ce293c9f65a1755252dad3b9afaaaa6b545180187fb73ce583af01f3187978130876ee5169e  linux-bb8e6e72702c73c90b9009c9b140c0575a69a94d.tar.gz
+07a58d5bcb1f1682a46f31783a5c0a78e5551c029ccbe3150608de6f3365cc4c92e0670dfea9c7678d45229556da50cea1a0a37ac7ae5754f95502973d8d7bbe  linux-d8303fb13d4784415cc07365dcbecd324002d675.tar.gz
 5f8d3c43bf26c0a3d8afa76b9b54b1bc63226a73097ab11f5afdf95a55a664ef93082517036180d865d8afe08e827e6d91a4c8af636c182d5c5af39beb067227  config-postmarketos-qcom-sm8150.aarch64
 "

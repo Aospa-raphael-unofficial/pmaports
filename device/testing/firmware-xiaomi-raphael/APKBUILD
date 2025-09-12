@@ -1,9 +1,10 @@
 pkgname=firmware-xiaomi-raphael
 pkgver=20250910
-pkgrel=0
+pkgrel=1
 pkgdesc="Firmware for Xiaomi Mi 9T Pro / Redmi K20 Pro"
 subpackages="
 	$pkgname-adsp
+	$pkgname-bt
 	$pkgname-cdsp
 	$pkgname-gpu
 	$pkgname-ipa
@@ -17,10 +18,11 @@ url="https://github.com/Aospa-raphael-unofficial/firmware-xiaomi-raphael"
 arch="aarch64"
 license="proprietary"
 options="!check !strip !archcheck !tracedeps pmb:cross-native"
-_commit="2fc041d232c26728303e538f636926d48e7464d1"
+_commit="aedebb29728111b0c0258bb196c29bb4603f2d9b"
 source="
 	$pkgname-$_commit.tar.gz::$url/archive/$_commit/$pkgname-$_commit.tar.gz
 	adsp.files
+	bt.files
 	cdsp.files
 	gpu.files
 	ipa.files
@@ -53,6 +55,13 @@ adsp() {
 
 	mkdir "$subpkgdir"
 	install_files "adsp.files"
+}
+
+bt() {
+        pkgdesc="Xiaomi Mi 9T Pro / Redmi K20 Pro adsp firmware"
+
+        mkdir "$subpkgdir"
+        install_files "bt.files"
 }
 
 cdsp() {
@@ -112,8 +121,9 @@ ath10k() {
 }
 
 sha512sums="
-688ef09d7aa23e938960802da027c5c315a20dda9259edab6d4583e4618eda4241ee44be11ff12d3c8e307376e076256f92d82ddf1a0ec7c797751a4add666cd  firmware-xiaomi-raphael-2fc041d232c26728303e538f636926d48e7464d1.tar.gz
+95139fe65d34f4407877542dab100a584fec5b50c8d2e88fb537ee984c74c8582988c5042502bec4b5380ba5894194fde797588cd4198b41d746aa4f63663dee  firmware-xiaomi-raphael-aedebb29728111b0c0258bb196c29bb4603f2d9b.tar.gz
 b5e627621369224d0bd0056471bd03efd88e40b1b9c1a122a745a70ecbc7eb00186ccb99ee4baf80fc941a23737ceaf14609a79c8e311a21bb856d680fc9f86c  adsp.files
+3ab88ffaba07fe4f83fd2ec48612554ea10444e823d934237f156fca7284839390d9b2e445067a1a6ee66ef1f99e34dc9f4547c4988141f9c9689d8e98f4193d  bt.files
 104fdadedaf4b731f03dc43ac3981c600209edc391f8cc86baefdc2b86a6f61c8c6592b9de74e498a5b76c01a7f7740d1179dbbd88b498ba253b7b03eab2d172  cdsp.files
 6ab4505231b43b502f300094697bc419eb33407fa9d9424678ba6b72eb3d50df255ffee8ea74fd17a8e875a0e14c53987c4fb7e5f5a18b8bef3ef8ea0fb8455a  gpu.files
 46eda1b05a8bdb3036b22cbebe36fe55892c5e3c133d64d5c21cec0ab08270397fabd0381316e8594b95c10ace5243362b63759ddb02cdb5cd7ab6cf9ad830f6  ipa.files
