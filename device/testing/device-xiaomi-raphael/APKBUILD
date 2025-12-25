@@ -12,6 +12,7 @@ depends="
 	bootmac
 	linux-firmware-ath10k
 	linux-firmware-qca
+	linux-firmware-qcom
 	linux-postmarketos-qcom-sm8150
 	make-dynpart-mappings
 	msm-modem
@@ -50,12 +51,10 @@ nonfree_firmware() {
 	depends="
 		firmware-xiaomi-raphael-adsp
 		firmware-xiaomi-raphael-cdsp
-		firmware-xiaomi-raphael-gpu
 		firmware-xiaomi-raphael-ipa
 		firmware-xiaomi-raphael-modem
 		firmware-xiaomi-raphael-sensors   
 		firmware-xiaomi-raphael-venus
-		firmware-xiaomi-raphael-wlan
 		firmware-xiaomi-raphael-ath10k
 		hexagonrpcd>=0.3.2-r3
 		soc-qcom-modem
