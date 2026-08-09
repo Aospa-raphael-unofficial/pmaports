@@ -4,7 +4,7 @@ maintainer="Pan Ortiz <panjeoc@proton.me>"
 _flavor="postmarketos-qcom-sm8150"
 pkgname=linux-$_flavor
 pkgver=7.1.0
-pkgrel=1
+pkgrel=3
 pkgdesc="Mainline Kernel fork for SM8150 devices"
 arch="aarch64"
 _carch="arm64"
@@ -31,7 +31,7 @@ makedepends="
 "
 
 _config="config-$_flavor.$arch"
-_commit="553e3ebb5f04226a737e2362ca23211929f71a8c"
+_commit="4afd671e0bd3c31e63d109801392d08349326ead"
 
 source="
 	linux-$_commit.tar.gz::https://github.com/Aospa-raphael-unofficial/linux/archive/$_commit.tar.gz
@@ -74,6 +74,6 @@ package() {
 }
 
 sha512sums="
-25156094710c00bf7baad11e54761ea164fbf40727abd4f064dbfcebc970c2d1bfc61a06d80cf8d2abc4c6cc95a00a4286a106a157c689a19c9fed0ed15cf989  linux-553e3ebb5f04226a737e2362ca23211929f71a8c.tar.gz
+8ffe673456e68867c778bf752be3c08085dfb670ad4e8e74fccadb593015da846e3f645b8579405ef8fcb6f6dc45703a099b67ee36043b4e62562bbaf5934219  linux-4afd671e0bd3c31e63d109801392d08349326ead.tar.gz
 e22c7199afff4e725daafa49af061e2dd9136578f2e76483aebded72f8332494c884ae3135e85679c533278e2c57fd495a87aef9df8c12a647c7e1fdeefbf711  config-postmarketos-qcom-sm8150.aarch64
 "
