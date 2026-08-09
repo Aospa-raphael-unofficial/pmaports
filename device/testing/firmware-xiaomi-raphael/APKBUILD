@@ -1,7 +1,7 @@
 maintainer="Piyush Raj Chouhan <pc1598@mainlining.org>"
 pkgname=firmware-xiaomi-raphael
-pkgver=20260330
-pkgrel=0
+pkgver=20260730
+pkgrel=1
 pkgdesc="Firmware for Xiaomi Mi 9T Pro / Redmi K20 Pro"
 url="https://gitlab.postmarketos.org/Pc1598/firmware-xiaomi-raphael"
 arch="aarch64"
@@ -29,5 +29,5 @@ package() {
 
 sha512sums="
 2fa75edae270ea8317252a52d8be791bd60e193b6482d3c63e783e7a15e396f072b218c644dc20eee70c3cc15b327bd6e0a77463a5bb5105bcd2603a3c13101a  firmware-xiaomi-raphael-a5e14b17501f1b3e0cfd0a796b1ce683c5c076ab.tar.gz
-f1564eaae902117e8e364ae3bf50fe9517120a3c627954f1539d6d7c29e73d655682b1dfb2da59f462b64d51e0a4133f6e3257ca0bba52af7e02d11736c18efd  30-initramfs-firmware-xiaomi-raphael.files
+ac074699bfdcaa98dee957fdc486b15d487d244164583e7e082e79e0e10f1ef4bf654eb3f546ab7e0e1d76ca05cb2f3f7d08e2eba4c45b5c95aaa2d400c03f2c  30-initramfs-firmware-xiaomi-raphael.files
 "

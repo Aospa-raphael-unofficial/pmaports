@@ -1,0 +1,23 @@
+maintainer="Piyush Raj Chouhan <pc1598@mainlining.org>"
+pkgname=alsa-ucm-conf-qcom-sm8150
+pkgver=1.2.16.1_git20260915
+pkgrel=1
+pkgdesc="ALSA UCM configuration for sm8150 devices"
+url="https://github.com/Aospa-raphael-unofficial/alsa-ucm-conf"
+arch="aarch64"
+license="BSD-3-Clause"
+provides="alsa-ucm-conf=0.${pkgver%_*}-r$pkgrel" # versioned provides need to be below default version
+_commit="7c1969e3c2e55b8be94ac40f69632dca4d3e9309"
+source="$pkgname-$_commit.tar.gz::https://github.com/Aospa-raphael-unofficial/alsa-ucm-conf/archive/$_commit.tar.gz"
+options="!check"
+builddir="$srcdir/alsa-ucm-conf-$_commit"
+
+package() {
+	# install audio config files
+	mkdir -p "$pkgdir"/usr/share/alsa
+	cp -r ucm2 "$pkgdir"/usr/share/alsa/
+}
+
+sha512sums="
+d3a8acb32a264480da58dfd572e50ca18e92c483b71d47c57db9baaaf7cca9af0ff6d03d86af7523ef8b4de7d3dcf0d2a1a8ce848ac0656ce006d2f4da7cdf2f  alsa-ucm-conf-qcom-sm8150-7c1969e3c2e55b8be94ac40f69632dca4d3e9309.tar.gz
+"

@@ -3,7 +3,7 @@
 maintainer="Pan Ortiz <panjeoc@proton.me>"
 _flavor="postmarketos-qcom-sm8150"
 pkgname=linux-$_flavor
-pkgver=7.1.0
+pkgver=7.3.0
 pkgrel=1
 pkgdesc="Mainline Kernel fork for SM8150 devices"
 arch="aarch64"
@@ -18,20 +18,24 @@ options="!strip !check !tracedeps
 "
 
 makedepends="
-	bison
-	clang
-	findutils
-	flex
-	lld
-	llvm
-	openssl-dev
-	perl
-	postmarketos-installkernel
-	python3
+    bison
+    clang
+    elfutils-dev
+    findutils
+    flex
+    linux-headers
+    lld
+    llvm
+    openssl-dev
+    pahole
+    perl
+    postmarketos-installkernel
+    python3
+    zlib-dev
 "
 
 _config="config-$_flavor.$arch"
-_commit="553e3ebb5f04226a737e2362ca23211929f71a8c"
+_commit="e5a62e592db6e67047707544afd349b84638d47a"
 
 source="
 	linux-$_commit.tar.gz::https://github.com/Aospa-raphael-unofficial/linux/archive/$_commit.tar.gz
@@ -47,7 +51,13 @@ prepare() {
 
 build() {
 	unset LDFLAGS
-	make ARCH="$_carch" LLVM=1 \
+	make ARCH="$_carch" \
+		LLVM=1 \
+		LLVM_IAS=1 \
+		CC="clang" \
+		HOSTCC="clang" \
+		HOSTCXX="clang++" \
+		HOSTLD="ld.lld" \
 		KBUILD_BUILD_VERSION="$((pkgrel + 1))-$_flavor"
 }
 
@@ -74,6 +84,6 @@ package() {
 }
 
 sha512sums="
-25156094710c00bf7baad11e54761ea164fbf40727abd4f064dbfcebc970c2d1bfc61a06d80cf8d2abc4c6cc95a00a4286a106a157c689a19c9fed0ed15cf989  linux-553e3ebb5f04226a737e2362ca23211929f71a8c.tar.gz
-e22c7199afff4e725daafa49af061e2dd9136578f2e76483aebded72f8332494c884ae3135e85679c533278e2c57fd495a87aef9df8c12a647c7e1fdeefbf711  config-postmarketos-qcom-sm8150.aarch64
+266651326cd2dbbbea334d346680c85a53f72d9d653e67a684f3ed5c2e1cec49a2b6a7b9cb089237440f48df94ffe920f22edb592d96af99aebf2100a0bfa0a9  linux-e5a62e592db6e67047707544afd349b84638d47a.tar.gz
+6ba53e7466d96bc2bb90986e0fb9b76eaa115ea09ca591db4fbfd054c9d32a44cb4bc184bdb32672db7e195a5358820666dbd744773f9f8756f0a6a575cacf43  config-postmarketos-qcom-sm8150.aarch64
 "

@@ -3,13 +3,17 @@
 pkgname=device-xiaomi-raphael
 pkgdesc="Xiaomi Mi 9T Pro / Redmi K20 Pro"
 pkgver=7
-pkgrel=1
+pkgrel=4
 url="https://postmarketos.org"
 license="MIT"
 arch="aarch64"
 options="!check !archcheck"
 depends="
+	alsa-ucm-conf-qcom-sm8150
+	firmware-qcom-adreno-a640
+	firmware-xiaomi-raphael
 	hexagonrpcd
+	linux-firmware-qca
 	linux-postmarketos-qcom-sm8150
 	make-dynpart-mappings
 	postmarketos-base
@@ -21,12 +25,7 @@ depends="
 "
 makedepends="devicepkg-dev"
 
-subpackages="
-	$pkgname-nonfree-firmware:nonfree_firmware
-"
-
 source="
-	81-libssc-180-degrees.rules
 	deviceinfo
 	kernel-cmdline.conf
 "
@@ -39,18 +38,7 @@ package() {
 	devicepkg_package $startdir $pkgname
 }
 
-nonfree_firmware() {
-	pkgdesc="GPU, venus, modem and sensor firmware"
-	depends="
-		firmware-xiaomi-raphael
-	"
-
-        install -Dm644 "$srcdir"/81-libssc-180-degrees.rules -t \
-                "$subpkgdir"/usr/lib/udev/rules.d
-}
-
 sha512sums="
-2c16ba75e0077b2b1eaefa4c73b287475505a1aeb291ec29316d41cc094277320f9d2aaabfd91eb1dc0f488ab2d61a94faef16e7afe0f1e226779113761b9a37  81-libssc-180-degrees.rules
-42bd2cc671cd74346f2615b2c1731798f4d57a99744b763706ac2d441f69fc49a7740b1cd0c346c809a054c4812e3b16715386597bf29455da79aee83eb03f79  deviceinfo
-57cfc61c6770bdc99460a36b29a3c7f92428da80a85ea00a78da168419236ce5ac8c945a97c1351d14e53b7fc9d2f9542c43c08f3348034c185d2c17f7351620  kernel-cmdline.conf
+4d340c8e7f91e1dbf17a9fa3e8d68df122249728d99e6a9ec4a5d23a1186ac032ceac43fe408b082dad71c69866f4fba2eea9488d410cfe8bd0c4f1c9c990290  deviceinfo
+390b607d42ae5972688d5209a9886666a5175ae7b7c27f88bc6d306d20f932d67a26f2d9650bc92e521cafd8cafbbe1b60d8bf10c4b2c842eef7775f046880b5  kernel-cmdline.conf
 "
